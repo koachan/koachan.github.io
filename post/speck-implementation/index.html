@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Koakuma">
+<meta name="description" content="Cute stuff all around">
+<meta name="generator" content="Hugo 0.48" />
+<title> A Speck 128/128 Cipher Implementation &middot;  Koakuma&#39;s Notes</title>
+<link rel="shortcut icon" href="https://koachan.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://koachan.github.io/css/style.css">
+<link href="https://koachan.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Koakuma&#39;s Notes" />
+<meta property="og:title" content="A Speck 128/128 Cipher Implementation" />
+<meta property="og:description" content="This is an implementation of the Speck cipher, with 128 bits key and block size, in standard C99 and PowerPC assembly.
+Please go to the GitHub page if you want to look at or download the code.
+Disclaimer: This is experimental code, use it at your own risk.
+General notes I only implement the block core of the cipher. There&rsquo;s no support code for running it in the various modes of operation (other than ECB which is trivial to do)." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://koachan.github.io/post/speck-implementation/" /><meta property="article:published_time" content="2019-06-23T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-06-23T00:00:00&#43;00:00"/>
+<meta itemprop="name" content="A Speck 128/128 Cipher Implementation">
+<meta itemprop="description" content="This is an implementation of the Speck cipher, with 128 bits key and block size, in standard C99 and PowerPC assembly.
+Please go to the GitHub page if you want to look at or download the code.
+Disclaimer: This is experimental code, use it at your own risk.
+General notes I only implement the block core of the cipher. There&rsquo;s no support code for running it in the various modes of operation (other than ECB which is trivial to do).">
+<meta itemprop="datePublished" content="2019-06-23T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-06-23T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="583">
+<meta itemprop="keywords" content="Assembly,C,Cryptography,PowerPC,Speck," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="A Speck 128/128 Cipher Implementation"/>
+<meta name="twitter:description" content="This is an implementation of the Speck cipher, with 128 bits key and block size, in standard C99 and PowerPC assembly.
+Please go to the GitHub page if you want to look at or download the code.
+Disclaimer: This is experimental code, use it at your own risk.
+General notes I only implement the block core of the cipher. There&rsquo;s no support code for running it in the various modes of operation (other than ECB which is trivial to do)."/>
+    </head>
+<body>
+    <nav class="main-nav">
+		<a href='https://koachan.github.io/'> <span class="arrow">←</span>Home</a>
+ 		<a href='/about/'>About Me</a>
+		<a class="cta" href="https://koachan.github.io/index.xml">Subscribe</a>
+</nav>
+    <section id="wrapper">
+<article class="post">
+    <header>
+        <h1>A Speck 128/128 Cipher Implementation</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        June 23, 2019
+        <br>
+                <a href="https://koachan.github.io/tags/assembly">Assembly</a>
+                <a href="https://koachan.github.io/tags/c">C</a>
+                <a href="https://koachan.github.io/tags/cryptography">Cryptography</a>
+                <a href="https://koachan.github.io/tags/powerpc">PowerPC</a>
+                <a href="https://koachan.github.io/tags/speck">Speck</a>
+        </h2>
+    </header>
+    <section id="post-body">
+<p>This is an implementation of the Speck cipher, with 128 bits key and block size,
+in standard C99 and PowerPC assembly.</p>
+<p>Please go to the <a href="https://github.com/koachan/speck">GitHub page</a> if you want to
+look at or download the code.</p>
+<p>Disclaimer: <em>This is experimental code, use it at your own risk.</em></p>
+<h2 id="general-notes">General notes</h2>
+<p>I only implement the block core of the cipher. There&rsquo;s no support code for
+running it in the various modes of operation (other than ECB which is trivial
+to do).</p>
+<p>There&rsquo;s no set rule as to what endianness to use in encoding the key, ciphertext,
+and plaintext, though the cipher authors have advised to encode the inputs
+in little-endian<sup class="footnote-ref" id="fnref:endianness"><a href="#fn:endianness">1</a></sup>.</p>
+<p>To use it, first make a <code>speck_ctx_t</code> variable and initialize it with the round
+keys using <code>speck_init</code>. After the context is initialized, it can be used for
+encrypting or decrypting blocks. For an example on how to use it, see <code>main.c</code>.</p>
+<h2 id="c-version-notes">C version notes</h2>
+<p>The C version is largely based on the paper&rsquo;s own implementation, with a few
+differences. First, I changed the <code>ROR</code> and <code>ROL</code> definitions to use standard
+bitshift operations instead of x86 intrinsics.
+I also separated the round key generation and the actual encryption/decryption process.</p>
+<h2 id="32-bit-powerpc-assembly-version-notes">32-bit PowerPC assembly version notes</h2>
+<p>The 32-bit PowerPC version is a pretty straightforward translation from the C code.
+There&rsquo;s no optimization apart from the use of <code>srwi</code>/<code>insrwi</code> and <code>slwi</code>/<code>inslwi</code>
+instructions to do 64-bit bitwise rotation quickly on two 32-bit registers.</p>
+<h2 id="64-bit-powerpc-assembly-version-notes">64-bit PowerPC assembly version notes</h2>
+<p>It turns out that GCC at -O3 generates a nearly identical code with what I wrote!
+Why did I write this variant, again?</p>
+<h2 id="speed-comparison">Speed comparison</h2>
+<p>I&rsquo;ve tested the code on three machines:</p>
+<ul>
+<li>A Mac mini G4, with a PowerPC 7447A CPU running at 1416.67 MHz (PowerPC); and</li>
+<li>A Power Mac G5, with a PowerPC 970MP CPU running at 2000 MHz (PowerPC-64); and</li>
+<li>A ThinkPad X220, with an Intel Core i5-2520M CPU running at 2500 MHz (x86-64)</li>
+</ul>
+<p>Both Macs run Debian unstable with GCC version 8.2.0, while the ThinkPad runs
+OpenBSD 6.4 with Clang 6.0.0. All runs are single-threaded. &ldquo;Unrolled&rdquo; means that
+the C code is slightly modified so it runs two rounds (instead of a single round)
+in every iteration loop.</p>
+<p>Below are the results of a simple benchmark of encrypting and decrypting 100 MiB
+of zeroes in ECB mode (see <code>main.c</code> for details). The results are the average of
+three runs.</p>
+<p>Encryption:</p>
+<table>
+<thead>
+<tr>
+<th>Arch</th>
+<th>Variant</th>
+<th>Speed (MiB/s)</th>
+<th>Speed (cycles/byte)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PowerPC</td>
+<td>C</td>
+<td>63.95</td>
+<td>22.15</td>
+</tr>
+<tr>
+<td>PowerPC</td>
+<td>C unrolled</td>
+<td>70.66</td>
+<td>20.05</td>
+</tr>
+<tr>
+<td>PowerPC</td>
+<td>Assembly</td>
+<td>70.68</td>
+<td>20.04</td>
+</tr>
+<tr>
+<td>PowerPC-64</td>
+<td>C</td>
+<td>Not yet tested</td>
+<td>Not yet tested</td>
+</tr>
+<tr>
+<td>PowerPC-64</td>
+<td>C unrolled</td>
+<td>Not yet tested</td>
+<td>Not yet tested</td>
+</tr>
+<tr>
+<td>PowerPC-64</td>
+<td>Assembly</td>
+<td>133.59</td>
+<td>14.97</td>
+</tr>
+<tr>
+<td>x86-64</td>
+<td>C</td>
+<td>396.19</td>
+<td>6.31</td>
+</tr>
+<tr>
+<td>x86-64</td>
+<td>C unrolled</td>
+<td>403.18</td>
+<td>6.2</td>
+</tr>
+</tbody>
+</table>
+<p>Decryption:</p>
+<table>
+<thead>
+<tr>
+<th>Arch</th>
+<th>Variant</th>
+<th>Speed (MiB/s)</th>
+<th>Speed (cycles/byte)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PowerPC</td>
+<td>C</td>
+<td>63.89</td>
+<td>22.17</td>
+</tr>
+<tr>
+<td>PowerPC</td>
+<td>C unrolled</td>
+<td>63.28</td>
+<td>22.39</td>
+</tr>
+<tr>
+<td>PowerPC</td>
+<td>Assembly</td>
+<td>71</td>
+<td>19.95</td>
+</tr>
+<tr>
+<td>PowerPC-64</td>
+<td>C</td>
+<td>Not yet tested</td>
+<td>Not yet tested</td>
+</tr>
+<tr>
+<td>PowerPC-64</td>
+<td>C unrolled</td>
+<td>Not yet tested</td>
+<td>Not yet tested</td>
+</tr>
+<tr>
+<td>PowerPC-64</td>
+<td>Assembly</td>
+<td>116.56</td>
+<td>17.16</td>
+</tr>
+<tr>
+<td>x86-64</td>
+<td>C</td>
+<td>352.95</td>
+<td>7.08</td>
+</tr>
+<tr>
+<td>x86-64</td>
+<td>C unrolled</td>
+<td>347.01</td>
+<td>7.2</td>
+</tr>
+</tbody>
+</table>
+<p>Some interesting observations:</p>
+<ul>
+<li><del>On PowerPC, simply unrolling the loop gives a bigger performance increase than
+implementing Speck in assembly when doing encryption.</del> Further assembly
+optimization by removing the function prologues and epilogues makes this no longer true.</li>
+<li>On PowerPC-64 and x86-64, decryption is much slower than encryption.</li>
+<li>Decryption performance goes down by a bit when unrolled (more pronounced on
+x86-64).</li>
+</ul>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="https://eprint.iacr.org/2013/404">The IACR paper on Speck</a></li>
+<li><a href="https://wiibrew.org/wiki/Assembler">Wii Homebrew&rsquo;s assembly page</a> (the Wii uses a PowerPC CPU)</li>
+<li><a href="https://cache.freescale.com/files/product/doc/MPC82XINSET.pdf">MPCxxx series instruction set reference book</a></li>
+</ul>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn:endianness">See <a href="https://www.spinics.net/lists/arm-kernel/msg633602.html">this email</a> regarding endianness.
+ <a class="footnote-return" href="#fnref:endianness"><sup>[return]</sup></a></li>
+</ol>
+</div>
+    </section>
+</article>
+<footer id="post-meta" class="clearfix">
+</footer>
+<ul id="post-list" class="archive readmore">
+    <h3>More Posts</h3>
+        <li>
+            <a href="/post/new-start/">A New Start<aside class="dates">Mar 20 2020</aside></a>
+        </li>
+        <li>
+            <a href="/post/dnscrypt-debian-ppc/">Building dnscrypt-proxy 2 on Debian/ppc<aside class="dates">Jun 23 2019</aside></a>
+        </li>
+</ul>
+        <footer id="footer">
+    <p class="small">
+        © Copyright 2020 Koakuma
+    </p>
+</footer>
+    </section>
+</body>
+</html>

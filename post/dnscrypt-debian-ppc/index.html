@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Koakuma">
+<meta name="description" content="Cute stuff all around">
+<meta name="generator" content="Hugo 0.48" />
+<title> Building dnscrypt-proxy 2 on Debian/ppc &middot;  Koakuma&#39;s Notes</title>
+<link rel="shortcut icon" href="https://koachan.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://koachan.github.io/css/style.css">
+<link href="https://koachan.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Koakuma&#39;s Notes" />
+<meta property="og:title" content="Building dnscrypt-proxy 2 on Debian/ppc" />
+<meta property="og:description" content="Update 2019/06/23: I&rsquo;ve moved to unbound now. This page will stay here as a reference but I don&rsquo;t recommend doing this anymore.
+A small guide (and note to myself) on how to build version 2 of dnscrypt-proxy on Debian/ppc, since Debian only provides version 1.9.5 in its ppc repositories.
+This guide might apply to other flavors of PowerPC Linux too, with some adjustments regarding package installation and file locations." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://koachan.github.io/post/dnscrypt-debian-ppc/" /><meta property="article:published_time" content="2019-06-23T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-06-23T00:00:00&#43;00:00"/>
+<meta itemprop="name" content="Building dnscrypt-proxy 2 on Debian/ppc">
+<meta itemprop="description" content="Update 2019/06/23: I&rsquo;ve moved to unbound now. This page will stay here as a reference but I don&rsquo;t recommend doing this anymore.
+A small guide (and note to myself) on how to build version 2 of dnscrypt-proxy on Debian/ppc, since Debian only provides version 1.9.5 in its ppc repositories.
+This guide might apply to other flavors of PowerPC Linux too, with some adjustments regarding package installation and file locations.">
+<meta itemprop="datePublished" content="2019-06-23T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-06-23T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="321">
+<meta itemprop="keywords" content="DNSCrypt,Debian,PowerPC," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Building dnscrypt-proxy 2 on Debian/ppc"/>
+<meta name="twitter:description" content="Update 2019/06/23: I&rsquo;ve moved to unbound now. This page will stay here as a reference but I don&rsquo;t recommend doing this anymore.
+A small guide (and note to myself) on how to build version 2 of dnscrypt-proxy on Debian/ppc, since Debian only provides version 1.9.5 in its ppc repositories.
+This guide might apply to other flavors of PowerPC Linux too, with some adjustments regarding package installation and file locations."/>
+    </head>
+<body>
+    <nav class="main-nav">
+		<a href='https://koachan.github.io/'> <span class="arrow">←</span>Home</a>
+ 		<a href='/about/'>About Me</a>
+		<a class="cta" href="https://koachan.github.io/index.xml">Subscribe</a>
+</nav>
+    <section id="wrapper">
+<article class="post">
+    <header>
+        <h1>Building dnscrypt-proxy 2 on Debian/ppc</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        June 23, 2019
+        <br>
+                <a href="https://koachan.github.io/tags/dnscrypt">DNSCrypt</a>
+                <a href="https://koachan.github.io/tags/debian">Debian</a>
+                <a href="https://koachan.github.io/tags/powerpc">PowerPC</a>
+        </h2>
+    </header>
+    <section id="post-body">
+<p><em>Update 2019/06/23: I&rsquo;ve moved to <code>unbound</code> now. This page will stay here as a
+reference but I don&rsquo;t recommend doing this anymore.</em></p>
+<p>A small guide (and note to myself) on how to build version 2 of dnscrypt-proxy
+on Debian/ppc, since Debian only provides version 1.9.5 in its ppc repositories.</p>
+<p>This guide might apply to other flavors of PowerPC Linux too, with some
+adjustments regarding package installation and file locations.</p>
+<p>That being said, let&rsquo;s start building!</p>
+<p>First, we need to install Git and a Go compiler. Since the official compiler
+doesn&rsquo;t support the ppc architecture, we use gccgo instead. Also, don&rsquo;t forget
+to set up the <code>GOPATH</code> environment variable.</p>
+<pre><code>$ sudo apt install git gccgo
+$ export GOPATH=&quot;$HOME/go&quot;
+</code></pre>
+<p>Now, set up the directory for the code to reside in, and clone the code, and
+checkout to the latest stable version (2.0.9 as of the time of writing).</p>
+<pre><code>$ mkdir -p $GOPATH/jedisct1
+$ cd $GOPATH/jedisct1
+$ git clone https://github.com/jedisct1/dnscrypt-proxy src
+$ cd src
+$ git checkout tags/2.0.9
+</code></pre>
+<p>Before building, we need to generate some ppc-specific files.</p>
+<pre><code>$ cd vendor/golang.org/x/net/internal/socket
+$ go-8 tool cgo -godefs defs_linux.go &gt; zsys_linux_ppc.go
+</code></pre>
+<p>And make a new file named <code>sys_linux_ppc.go</code> with the following contents:</p>
+<pre><code>package socket
+// Numbers taken from /usr/include/powerpc-linux-gnu/asm/unistd.h
+const (
+	sysRECVMMSG = 343
+	sysSENDMMSG = 349
+)
+</code></pre>
+<p>Also, add <code>ppc</code> to the first <code>+build</code> line in <code>cmsghdr_linux_32bit.go</code>,
+<code>iovec_32bit.go</code>, and <code>msghdr_linux_32bit.go</code>.</p>
+<p>Now we can go back and build it!</p>
+<pre><code>$ cd -
+$ cd dnscrypt-proxy
+$ go-8 build
+</code></pre>
+<p>Let&rsquo;s also test the binary if it works.</p>
+<pre><code>$ ./dnscrypt-proxy
+</code></pre>
+<p>If there&rsquo;s no segmentation faults or panics, then we&rsquo;re successful!</p>
+<p>Lastly, copy the binary to somewhere convenient, like <code>/usr/local/bin</code>.</p>
+<pre><code>$ sudo cp ./dnscrypt-proxy /usr/local/bin
+</code></pre>
+<p>Now that we have a working installation, we can continue setting it up
+using <a href="https://github.com/jedisct1/dnscrypt-proxy/wiki/installation">the official guide</a>. :)</p>
+<p>Hope this will be useful to other Linux/PowerPC users too~</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="https://github.com/jedisct1/dnscrypt-proxy/wiki/building">The official guide for building dnscrypt-proxy</a></li>
+<li><a href="https://github.com/jedisct1/dnscrypt-proxy/wiki/installation">Installation guide (assumes you already have a working binary)</a></li>
+</ul>
+    </section>
+</article>
+<footer id="post-meta" class="clearfix">
+</footer>
+<ul id="post-list" class="archive readmore">
+    <h3>More Posts</h3>
+        <li>
+            <a href="/post/new-start/">A New Start<aside class="dates">Mar 20 2020</aside></a>
+        </li>
+        <li>
+            <a href="/post/speck-implementation/">A Speck 128/128 Cipher Implementation<aside class="dates">Jun 23 2019</aside></a>
+        </li>
+</ul>
+        <footer id="footer">
+    <p class="small">
+        © Copyright 2020 Koakuma
+    </p>
+</footer>
+    </section>
+</body>
+</html>

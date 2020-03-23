@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Assembly on Koakuma&#39;s Notes</title>
+    <link>https://koachan.github.io/tags/assembly/</link>
+    <description>Recent content in Assembly on Koakuma&#39;s Notes</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 23 Jun 2019 00:00:00 +0000</lastBuildDate>
+	<atom:link href="https://koachan.github.io/tags/assembly/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Speck 128/128 Cipher Implementation</title>
+      <link>https://koachan.github.io/post/speck-implementation/</link>
+      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/post/speck-implementation/</guid>
+      <description>This is an implementation of the Speck cipher, with 128 bits key and block size, in standard C99 and PowerPC assembly.
+Please go to the GitHub page if you want to look at or download the code.
+Disclaimer: This is experimental code, use it at your own risk.
+General notes I only implement the block core of the cipher. There&amp;rsquo;s no support code for running it in the various modes of operation (other than ECB which is trivial to do).</description>
+    </item>
+  </channel>
+</rss>

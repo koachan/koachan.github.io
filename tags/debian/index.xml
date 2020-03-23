@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Debian on Koakuma&#39;s Notes</title>
+    <link>https://koachan.github.io/tags/debian/</link>
+    <description>Recent content in Debian on Koakuma&#39;s Notes</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 23 Jun 2019 00:00:00 +0000</lastBuildDate>
+	<atom:link href="https://koachan.github.io/tags/debian/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building dnscrypt-proxy 2 on Debian/ppc</title>
+      <link>https://koachan.github.io/post/dnscrypt-debian-ppc/</link>
+      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/post/dnscrypt-debian-ppc/</guid>
+      <description>Update 2019/06/23: I&amp;rsquo;ve moved to unbound now. This page will stay here as a reference but I don&amp;rsquo;t recommend doing this anymore.
+A small guide (and note to myself) on how to build version 2 of dnscrypt-proxy on Debian/ppc, since Debian only provides version 1.9.5 in its ppc repositories.
+This guide might apply to other flavors of PowerPC Linux too, with some adjustments regarding package installation and file locations.</description>
+    </item>
+  </channel>
+</rss>

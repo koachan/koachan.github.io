@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Misc on Koakuma&#39;s Notes</title>
+    <link>https://koachan.github.io/tags/misc/</link>
+    <description>Recent content in Misc on Koakuma&#39;s Notes</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 20 Mar 2020 00:00:00 +0000</lastBuildDate>
+	<atom:link href="https://koachan.github.io/tags/misc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A New Start</title>
+      <link>https://koachan.github.io/post/new-start/</link>
+      <pubDate>Fri, 20 Mar 2020 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/post/new-start/</guid>
+      <description>Update: I finally decided to join the fediverse! It&amp;rsquo;s been fun so far!
+Hi, Koakuma here~
+Okay so&amp;hellip; this blog started out as a publicly viewable version of my computer- related notes and experiances, especially with less common platforms like PowerPC. As time goes on, I feel like I should write about something better than just random, unorganized stuff.
+But there&amp;rsquo;s one problem: I don&amp;rsquo;t know what to write about yet.</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Koakuma&#39;s Notes</title>
+    <link>https://koachan.github.io/tags/</link>
+    <description>Recent content in Tags on Koakuma&#39;s Notes</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 23 Jun 2019 00:00:00 +0000</lastBuildDate>
+	<atom:link href="https://koachan.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Assembly</title>
+      <link>https://koachan.github.io/tags/assembly/</link>
+      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/tags/assembly/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>C</title>
+      <link>https://koachan.github.io/tags/c/</link>
+      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/tags/c/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cryptography</title>
+      <link>https://koachan.github.io/tags/cryptography/</link>
+      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/tags/cryptography/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Debian</title>
+      <link>https://koachan.github.io/tags/debian/</link>
+      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/tags/debian/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Dnscrypt</title>
+      <link>https://koachan.github.io/tags/dnscrypt/</link>
+      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/tags/dnscrypt/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Misc</title>
+      <link>https://koachan.github.io/tags/misc/</link>
+      <pubDate>Fri, 20 Mar 2020 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/tags/misc/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Personal</title>
+      <link>https://koachan.github.io/tags/personal/</link>
+      <pubDate>Fri, 20 Mar 2020 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/tags/personal/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Powerpc</title>
+      <link>https://koachan.github.io/tags/powerpc/</link>
+      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/tags/powerpc/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Speck</title>
+      <link>https://koachan.github.io/tags/speck/</link>
+      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/tags/speck/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

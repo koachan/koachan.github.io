@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Koakuma&#39;s Notes</title>
+    <link>https://koachan.github.io/</link>
+    <description>Recent content on Koakuma&#39;s Notes</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 20 Mar 2020 00:00:00 +0000</lastBuildDate>
+	<atom:link href="https://koachan.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A New Start</title>
+      <link>https://koachan.github.io/post/new-start/</link>
+      <pubDate>Fri, 20 Mar 2020 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/post/new-start/</guid>
+      <description>Update: I finally decided to join the fediverse! It&amp;rsquo;s been fun so far!
+Hi, Koakuma here~
+Okay so&amp;hellip; this blog started out as a publicly viewable version of my computer- related notes and experiances, especially with less common platforms like PowerPC. As time goes on, I feel like I should write about something better than just random, unorganized stuff.
+But there&amp;rsquo;s one problem: I don&amp;rsquo;t know what to write about yet.</description>
+    </item>
+    <item>
+      <title>A Speck 128/128 Cipher Implementation</title>
+      <link>https://koachan.github.io/post/speck-implementation/</link>
+      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/post/speck-implementation/</guid>
+      <description>This is an implementation of the Speck cipher, with 128 bits key and block size, in standard C99 and PowerPC assembly.
+Please go to the GitHub page if you want to look at or download the code.
+Disclaimer: This is experimental code, use it at your own risk.
+General notes I only implement the block core of the cipher. There&amp;rsquo;s no support code for running it in the various modes of operation (other than ECB which is trivial to do).</description>
+    </item>
+    <item>
+      <title>Building dnscrypt-proxy 2 on Debian/ppc</title>
+      <link>https://koachan.github.io/post/dnscrypt-debian-ppc/</link>
+      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
+      <guid>https://koachan.github.io/post/dnscrypt-debian-ppc/</guid>
+      <description>Update 2019/06/23: I&amp;rsquo;ve moved to unbound now. This page will stay here as a reference but I don&amp;rsquo;t recommend doing this anymore.
+A small guide (and note to myself) on how to build version 2 of dnscrypt-proxy on Debian/ppc, since Debian only provides version 1.9.5 in its ppc repositories.
+This guide might apply to other flavors of PowerPC Linux too, with some adjustments regarding package installation and file locations.</description>
+    </item>
+  </channel>
+</rss>
